@@ -1,6 +1,6 @@
 ## Introduction
 
-Here we provide the data preprocessing code for multiple skin lesion datasets (now 7). We also provide the code to generated sythesized datasets with domain shifts (similar to cifar-10-c). This can be useful for real-world medical images domain shfits studies.
+Here we provide the data preprocessing code for multiple skin lesion datasets (now **7**). We also provide the code to generated sythesized datasets with domain shifts (similar to [cifar-10-c](https://github.com/hendrycks/robustness)). This can be useful for real-world medical images domain shfits studies.
 
 In addition, we provide code to train a neural network to classify skin lesion with dataset HAM, as we utilized in our [paper](https://arxiv.org/abs/2207.09957). 
 
@@ -75,7 +75,7 @@ We provided a pretrained model that trained on HAM training splits.
   <tr>
     <th>arch</th>
     <th>params</th>
-    <th>Performance on HAM test</th>
+    <th>accuracy on HAM test</th>
     <th colspan="6">download</th>
   </tr>
   <tr>
