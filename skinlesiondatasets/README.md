@@ -49,9 +49,9 @@ If you want to reproduce all the results of this paper, the reader can run the p
 
 `SplitHAMtrainval.ipynb`, which would split the dataset of HAM into train and test (which we take as the source dataset).
 
-`MakeD7Pdataset.ipynb`, which process the D7P dataset.
+`MakeD7Pdataset.ipynb`, which would process the D7P dataset.
 
-`MakePH2dataset.ipynb`, which process the PH2 dataset.
+`MakePH2dataset.ipynb`, which would process the PH2 dataset.
 
 `Generate_HAMtestc.ipynb`, which would generated sythesized test data with domain shifts using HAM (adpated from [cifar-10-c](https://github.com/hendrycks/robustness)).
 
