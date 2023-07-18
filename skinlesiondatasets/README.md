@@ -45,15 +45,15 @@ PH2download/
 
 If you want to reproduce all the results of this paper, the reader can run the processing code sequentially. Otherwise, choose what you want:
 
-`SplitSixDatasetsFromISIC.ipynb`, which picks the datasets from ISIC arichive.
+`SplitSixDatasetsFromISIC.ipynb`, which picks the six different datasets from ISIC arichive. (We exclude `SON` afterwards as it only contains one class)
 
-`SplitHAMtrainval.ipynb`, which would split the dataset of HAM (which we take as the source dataset).
+`SplitHAMtrainval.ipynb`, which would split the dataset of HAM into train and test (which we take as the source dataset).
 
-`MakeD7Pdataset.ipynb`, which would split the dataset of HAM (which we take as the source dataset).
+`MakeD7Pdataset.ipynb`, which process the D7P dataset.
 
-`MakePH2dataset.ipynb`, which would split the dataset of HAM (which we take as the source dataset).
+`MakePH2dataset.ipynb`, which process the PH2 dataset.
 
-`Generate_HAMtestc.ipynb`, which would generated sythesized test data with domain shifts (adpated from [cifar-10-c](https://github.com/hendrycks/robustness)).
+`Generate_HAMtestc.ipynb`, which would generated sythesized test data with domain shifts using HAM (adpated from [cifar-10-c](https://github.com/hendrycks/robustness)).
 
 After running the notebook, the processed datasets would be saved in `/SkinLesionDatasets` and `/SkinLesionDatasets_C`.
 
