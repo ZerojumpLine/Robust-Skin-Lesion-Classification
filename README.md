@@ -67,7 +67,7 @@ Training a ResNet in our experiments: python skin_train.py --gpu 0 --loss_type C
 
 ## Test Neural Networks
 
-To generate the predictions, please refer to `/HAMtest.ipynb`
+To generate the predictions, please refer to `/HAMtest.ipynb`. The results will be saved in `/skinresults`.
 
 We provided a pretrained model that trained on HAM training splits. 
 
