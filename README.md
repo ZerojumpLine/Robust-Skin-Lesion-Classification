@@ -12,7 +12,7 @@ For Conda users, you can create a new Conda environment using
 conda create -n skinclassifier python=3.9
 ```
 
-after activate the environment with 
+after activating the environment with 
 ```
 source activate skinclassifier
 ```
@@ -21,8 +21,7 @@ try to install all the dependencies with
 ```
 pip install -r requirements.txt
 ```
-
-Also install the conda environment for the jupyter notebook kernel.
+also install the conda environment for the jupyter notebook kernel.
 
 ```
 python -m ipykernel install --user --name=skinclassifier
