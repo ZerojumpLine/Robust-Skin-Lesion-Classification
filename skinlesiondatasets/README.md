@@ -53,9 +53,9 @@ If you want to reproduce all the results of this paper, the reader can run the p
 
 `MakePH2dataset.ipynb`, which would process the PH2 dataset.
 
-`Generate_HAMtestc.ipynb`, which would generated sythesized test data with domain shifts using HAM (adpated from [cifar-10-c](https://github.com/hendrycks/robustness)).
+`Generate_HAMtestc.ipynb`, which would generate sythesized test data with domain shifts using HAM (adpated from [cifar-10-c](https://github.com/hendrycks/robustness)).
 
-After running the notebook, the processed datasets would be saved in `/SkinLesionDatasets` and `/SkinLesionDatasets_C`.
+After running the notebook, the processed datasets would be saved in `/SkinLesionDatasets` and `/SkinLesionDatasets_C`. The reader would expect folder like this:
 
 ```
 SkinLesionDatasets/
