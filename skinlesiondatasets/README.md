@@ -4,7 +4,7 @@ Data processing for datasets from different sources.
 
 Here is the details of multi-domain skin leision datasets.
 
-<br/> <div align=center><img src="../figs/datatable.png" width="500px"/></div>
+<br/> <div align=center><img src="../figs/datatable.png" width="800px"/></div>
 
 
 ## Data downloaded
