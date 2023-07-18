@@ -29,7 +29,7 @@ python -m ipykernel install --user --name=skinclassifier
 
 ## Prepare datasets
 
-Please refer to the instruciton in `/skinlesiondatasets` to prepare the datasets.
+Please refer to the instructions in `/skinlesiondatasets` to prepare the datasets.
 
 
 ## Training Neural Networks
