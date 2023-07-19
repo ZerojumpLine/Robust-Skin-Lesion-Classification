@@ -94,7 +94,7 @@ We provided a pretrained model that trained on HAM training splits.
 We brought code from [CICL](https://github.com/YMarrakchi/CICL) and [LDAM](https://github.com/kaidic/LDAM-DRW).
 
 ## Citation
-If you find this code useful, please consider to cite our work:
+If you find this code useful, please consider citing our work:
 
 ```
 @article{li2022estimating,
