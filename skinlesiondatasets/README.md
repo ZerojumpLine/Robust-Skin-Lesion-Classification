@@ -9,21 +9,25 @@ Here is the details of multi-domain skin leision datasets.
 
 ## Data downloaded
 
-HAM, BCN, VIE, MSK and UDA can be downloaded from [the link](https://challenge.isic-archive.com/data/). We utilized the [tool](https://github.com/GalAvineri/ISIC-Archive-Downloader) to download the whole dataset. We saved the raw data in the folder `/ISIC-Archive-Downloader`.
+HAM, BCN, VIE, MSK and UDA can be downloaded from [the link](https://challenge.isic-archive.com/data/). We utilized this [tool](https://github.com/ImageMarkup/isic-cli#isic-cli=), which is a executable toolbox, to download the whole dataset.
 
-D7P can be downloaded from [the link](https://challenge.isic-archive.com/data/). We saved the raw data in the folder `/D7Pdownload`.
+```
+isic image download ./ISICdownload/Data/Images
+isic metadata download -o ./ISICdownload/Data/Descriptions.csv
+```
 
-PH2 can be downloaded from [the link](https://challenge.isic-archive.com/data/). We saved the raw data in the folder `/PH2download`.
+We would download the raw data into the folder `/ISICdownload`.
+
+D7P can be downloaded from [the link](https://derm.cs.sfu.ca/Welcome.html) after registration. We saved the raw data in the folder `/D7Pdownload`.
+
+PH2 can be downloaded from [the link](https://www.fc.up.pt/addi/project.html) via a dropbox link. We saved the raw data in the folder `/PH2download`.
 
 The raw data should be like:
 
 ```
-ISIC-Archive-Downloader/
+ISICdownload/
 ├── Data/
-  ├── Descriptions/
-    ├── ISIC_0000000
-    ├── ...
-    └── ISIC_9999806
+  ├── Descriptions.csv
   ├── Images/
     ├── ISIC_0000000.jpeg
     ├── ...

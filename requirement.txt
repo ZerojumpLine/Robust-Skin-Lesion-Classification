@@ -13,3 +13,6 @@ tensorboardx==2.2
 protobuf==3.19.1
 torchvision
 tqdm
+requests==2.27.1
+Pillow
+tqdm

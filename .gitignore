@@ -1,2 +1,5 @@
 .ipynb_checkpoints/*
 __pycache__/*
+skinlesiondatasets/PH2download/PH2Dataset
+skinlesiondatasets/ISICdownload/Data
+skinlesiondatasets/D7Pdownload/release_v0
