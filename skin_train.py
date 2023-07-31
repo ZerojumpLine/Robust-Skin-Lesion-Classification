@@ -158,7 +158,7 @@ def main_worker(gpu, ngpus_per_node, args):
     ])
 
     # set for HAM100000 datasets
-    data_folder = './SkinLesionDatasets/'
+    data_folder = './skinlesiondatasets/SkinLesionDatasets/'
     train_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'HAMtrain'), transform=transform_train)
     val_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'HAMtest'), transform=transform_val)
 
@@ -170,6 +170,7 @@ def main_worker(gpu, ngpus_per_node, args):
     # val_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'SON'), transform=transform_val)
     # val_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'UDA'), transform=transform_val)
     # val_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'VIE'), transform=transform_val)
+    # val_dataset = datasets.ImageFolder(root=os.path.join(data_folder, 'OTH'), transform=transform_val)
     val_dataset.class_to_idx = train_dataset.class_to_idx
 
     train_sampler = None

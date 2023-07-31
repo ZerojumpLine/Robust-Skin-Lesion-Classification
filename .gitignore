@@ -3,3 +3,8 @@ __pycache__/*
 skinlesiondatasets/PH2download/PH2Dataset
 skinlesiondatasets/ISICdownload/Data
 skinlesiondatasets/D7Pdownload/release_v0
+skinlesiondatasets/ISICv1sources.ipynb
+skinlesiondatasets/SkinLesionDatasets
+skinlesiondatasets/SkinLesionDatasets_C
+log/HAM*
+checkpoint/HAM*

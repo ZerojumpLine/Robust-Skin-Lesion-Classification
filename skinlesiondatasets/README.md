@@ -13,8 +13,9 @@ HAM, BCN, VIE, MSK and UDA can be downloaded from [the link](https://challenge.i
 
 ```
 isic image download ./ISICdownload/Data/Images
-isic metadata download -o ./ISICdownload/Data/Descriptions.csv
 ```
+
+Please also download the meta information (meta_v1.csv) from [this link](https://drive.google.com/file/d/1kML0WdOwBYydvovY0Xm7jDOAihS6MvOi/view?usp=sharing), which contains the data source information but is not avaiable anymore on the ISIC dataset.
 
 We would download the raw data into the folder `/ISICdownload`.
 
@@ -27,13 +28,12 @@ The raw data should be like:
 ```
 ISICdownload/
 ├── Data/
-  ├── Descriptions.csv
+  ├── meta_v1.csv
   ├── Images/
     ├── ISIC_0000000.jpeg
     ├── ...
-    └── ISIC_9999806.jpeg
-├── download_archive.py
-└── ...
+    ├── ISIC_9999806.jpeg
+    └── metadata.csv
 D7Pdownload/
 ├── release_v0/
   ├── images
@@ -49,7 +49,7 @@ PH2download/
 
 If you want to reproduce all the results of this paper, the reader can run the processing code sequentially. Otherwise, choose what you want:
 
-`SplitSixDatasetsFromISIC.ipynb`, which picks the six different datasets from ISIC arichive. (We exclude `SON` afterwards as it only contains one class)
+`SplitDatasetsFromISIC.ipynb`, which picks the six different datasets from ISIC arichive. (We exclude `SON` afterwards as it only contains one class)
 
 `SplitHAMtrainval.ipynb`, which would split the dataset of HAM into train and test (which we take as the source dataset).
 
