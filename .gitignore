@@ -7,8 +7,10 @@ skinlesiondatasets/ISICv1sources.ipynb
 skinlesiondatasets/SkinLesionDatasets
 skinlesiondatasets/SkinLesionDatasets_C
 log/HAM*
+log/cifar*
 checkpoint/HAM*
-
+checkpoint/cifar*
+data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

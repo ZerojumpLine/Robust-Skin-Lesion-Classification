@@ -32,7 +32,7 @@ python -m ipykernel install --user --name=skinclassifier
 Please refer to the instructions in `/skinlesiondatasets` to prepare the datasets.
 
 
-## Training Neural Networks
+## Training Neural Networks for Skin Lesion Classification
 
 ```console
 Usage: python skin_train.py [options]...
@@ -64,7 +64,7 @@ Training a ResNet in our experiments: python skin_train.py --gpu 0 --loss_type C
 ```
 
 
-## Test Neural Networks
+## Test Neural Networks for Skin Lesion Classification
 
 To generate the predictions, please refer to `/HAMtest.ipynb`. The results will be saved in `/skinresults`.
 
@@ -87,6 +87,34 @@ We provided a pretrained model that trained on HAM training splits.
     <td><a href="https://drive.google.com/file/d/1dxiqMMQiviT3vPPvEA05T6GNk7V5pI9o/view?usp=sharing">log_eval</a></td>
   </tr>
 </table>
+
+## Experiments with imbalanced cifar
+<details>
+
+<summary>
+Training Neural Networks on imbalanced cifar
+</summary>
+
+Training on cifar-10.
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None
+```
+
+</details>
+
+
+<details>
+
+<summary>
+Test Neural Networks on imbalanced cifar
+</summary>
+
+Please refer to '/cifar10test.ipynb'.
+
+</details>
+
+
 
 
 ## Acknowledgement
