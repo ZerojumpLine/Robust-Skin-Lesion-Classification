@@ -26,46 +26,39 @@ model_names = sorted(name for name in models.__dict__
     and callable(models.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch Cifar Training')
+# dataset configures
 parser.add_argument('--dataset', default='cifar10', help='dataset setting')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet32',
-                    choices=model_names,
-                    help='model architecture: ' +
-                        ' | '.join(model_names) +
-                        ' (default: resnet32)')
-parser.add_argument('--loss_type', default="CE", type=str, help='loss type')
-parser.add_argument('--imb_type', default="exp", type=str, help='imbalance type')
 parser.add_argument('--imb_factor', default=0.01, type=float, help='imbalance factor')
-parser.add_argument('--train_rule', default='None', type=str, help='data sampling strategy for train loader')
+parser.add_argument('--imb_type', default="exp", type=str, help='imbalance type')
 parser.add_argument('--rand_number', default=0, type=int, help='fix random number for data sampling')
+# network configures
+parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet32',
+                    choices=model_names, help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet32)')
+# training configures
+parser.add_argument('-j', '--workers', default=4, type=int, metavar='N', help='number of data loading workers (default: 4)')
+parser.add_argument('--epochs', default=200, type=int, metavar='N', help='number of total epochs to run')
+parser.add_argument('--start-epoch', default=0, type=int, metavar='N', help='manual epoch number (useful on restarts)')
+parser.add_argument('-b', '--batch-size', default=128, type=int, metavar='N', help='mini-batch size')
+parser.add_argument('--lr', '--learning-rate', default=0.1, type=float, metavar='LR', help='initial learning rate', dest='lr')
+parser.add_argument('--momentum', default=0.9, type=float, metavar='M', help='momentum')
+parser.add_argument('--wd', '--weight-decay', default=2e-4, type=float, metavar='W', help='weight decay (default: 1e-4)', dest='weight_decay')
+parser.add_argument('-p', '--print-freq', default=10, type=int, metavar='N', help='print frequency (default: 10)')
+parser.add_argument('--resume', default='', type=str, metavar='PATH', help='path to latest checkpoint (default: none)')
+parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', help='evaluate model on validation set')
+parser.add_argument('--pretrained', dest='pretrained', action='store_true', help='use pre-trained model')
+# imbalance training configures
+parser.add_argument('--loss_type', default="CE", type=str, help='loss type')
+parser.add_argument('--train_rule', default='None', type=str, help='data sampling strategy for train loader')
+# robust learning configures
+parser.add_argument('--mixup', action='store_true', help='mixup of training samples')
+parser.add_argument('--alpha', default=0.2, type=float, help='robust learning - alpha parameters for mixup')
+parser.add_argument('--adv', action='store_true', help='enable adversarial training process')
+parser.add_argument('--eps', default=1., type=float, help='robust learning - l parameters for adversarial training')
+parser.add_argument('--xi', default=0.1, type=float, help='robust learning - epsilon parameters for adversarial training')
+# general configures
 parser.add_argument('--exp_str', default='0', type=str, help='number to indicate which experiment it is')
-parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
-                    help='number of data loading workers (default: 4)')
-parser.add_argument('--epochs', default=200, type=int, metavar='N',
-                    help='number of total epochs to run')
-parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
-                    help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=128, type=int,
-                    metavar='N',
-                    help='mini-batch size')
-parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
-                    metavar='LR', help='initial learning rate', dest='lr')
-parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
-                    help='momentum')
-parser.add_argument('--wd', '--weight-decay', default=2e-4, type=float,
-                    metavar='W', help='weight decay (default: 1e-4)',
-                    dest='weight_decay')
-parser.add_argument('-p', '--print-freq', default=10, type=int,
-                    metavar='N', help='print frequency (default: 10)')
-parser.add_argument('--resume', default='', type=str, metavar='PATH',
-                    help='path to latest checkpoint (default: none)')
-parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
-                    help='evaluate model on validation set')
-parser.add_argument('--pretrained', dest='pretrained', action='store_true',
-                    help='use pre-trained model')
-parser.add_argument('--seed', default=None, type=int,
-                    help='seed for initializing training. ')
-parser.add_argument('--gpu', default=None, type=int,
-                    help='GPU id to use.')
+parser.add_argument('--seed', default=None, type=int, help='seed for initializing training. ')
+parser.add_argument('--gpu', default=None, type=int, help='GPU id to use.')
 parser.add_argument('--root_log',type=str, default='log')
 parser.add_argument('--root_model', type=str, default='checkpoint')
 best_acc1 = 0
@@ -74,6 +67,10 @@ best_acc1 = 0
 def main():
     args = parser.parse_args()
     args.store_name = '_'.join([args.dataset, args.arch, args.loss_type, args.train_rule, args.imb_type, str(args.imb_factor), args.exp_str])
+    if args.mixup:
+        args.store_name = args.store_name + '_mixup'
+    if args.adv:
+        args.store_name = args.store_name + '_adv'
     prepare_folders(args)
     if args.seed is not None:
         random.seed(args.seed)
@@ -260,14 +257,54 @@ def train(train_loader, model, criterion, optimizer, epoch, args, log, tf_writer
         if args.gpu is not None:
             input = input.cuda(args.gpu, non_blocking=True)
         target = target.cuda(args.gpu, non_blocking=True)
+        target_onehot = one_hot_embedding(target, len(args.cls_num_list))
+        target_onehot = target_onehot.cuda(args.gpu, non_blocking=True)
+        # input shape N, Channl, H, W
+        # target shape N, 
+
+        loss = 0
+
+        if args.mixup:
+            '''
+            mix up the samples in a training batch
+            '''
+            lam = np.random.beta(args.alpha, args.alpha)
+            args.lam = lam # a litte dummy, pass the parameter later for loss calculation
+            # just emphasize the effect by collecting more middle regions
+            datamix = input.flip(0)
+            # just flip the sample in the batch to be the sample to be mixed
+            input_mixup = lam * input + (1. - lam) * datamix
+            # change target to target one hot, then mix.
+            targetmix = target_onehot.flip(0)
+            target_onehot_mixup = lam * target_onehot + (1. - lam) * targetmix
+            target_onehot_mixup = target_onehot_mixup.cuda(args.gpu, non_blocking=True)
+            #
+            output_mixup = model(input_mixup)
+            loss_mixup = loss + criterion(output_mixup, target_onehot_mixup)
+            loss = loss + loss_mixup
+
+        if args.adv:
+            '''
+            add adversarial noise to the input
+            '''
+            # find the direction
+            r_vadv = generate_virtual_adversarial_perturbation(args, model, input, target)
+            r_vadv = r_vadv.detach()
+            ## the third step, train using the argumented results
+            input_adv = input + r_vadv
+            #
+            output_adv = model(input_adv)
+            loss_adv = criterion(output_adv, target_onehot)
+            loss = loss + loss_adv
 
         # compute output
         output = model(input)
-        loss = criterion(output, target)
+        loss_origin = criterion(output, target_onehot)
+        loss = loss + loss_origin
 
         # measure accuracy and record loss
         acc1, acc5 = accuracy(output, target, topk=(1, 5))
-        losses.update(loss.item(), input.size(0))
+        losses.update(loss_origin.item(), input.size(0))
         top1.update(acc1[0], input.size(0))
         top5.update(acc5[0], input.size(0))
 
@@ -376,6 +413,42 @@ def adjust_learning_rate(optimizer, epoch, args):
         lr = args.lr
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
+
+def one_hot_embedding(labels, num_classes):
+    '''Embedding labels to one-hot form.
+    Args:
+      labels: (LongTensor) class labels, sized [N,].
+      num_classes: (int) number of classes.
+    Returns:
+      (tensor) encoded labels, sized [N,#classes].
+    '''
+    y = torch.eye(num_classes)  # [D,D]
+
+    return y[labels]  # [N,D]
+
+def generate_virtual_adversarial_perturbation(args, model, data, target, criterion = nn.CrossEntropyLoss().cuda()):
+    d = torch.randn(data.size())
+    d = d.cuda(non_blocking=True)
+    d = args.xi * get_normalized_vector(d)
+
+    d.requires_grad = True
+    output = model(data + d)
+    # folowing nnunet...
+    logit_m = output
+    dist = criterion(logit_m, target)
+    grad = torch.autograd.grad(dist, d)[0] # return a tuple?
+    d = grad.detach()
+
+    return args.eps * get_normalized_vector(d)
+
+def get_normalized_vector(d):
+    dmax = torch.zeros(d.shape[0], 1, 1, 1)
+    dmax = dmax.cuda(non_blocking=True)
+    for k in range(0, d.shape[0]):
+        dmax[k, :, :, :] = (1e-12 + torch.max(d[k, :, :, :]))
+    d /= dmax
+    d /= torch.sqrt(1e-6 + torch.sum(d.pow(2), dim=tuple(list(range(1, len(d.shape)))), keepdim=True))
+    return d
 
 if __name__ == '__main__':
     main()

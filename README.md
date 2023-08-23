@@ -101,6 +101,36 @@ Training on cifar-10.
 python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None
 ```
 
+[class balancing learning - LDAM] Training on cifar-10
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type LDAM --train_rule None
+```
+
+[class balancing learning - DRW] Training on cifar-10
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule DRW
+```
+
+[Robust learning - mixup] Training on cifar-10
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --mixup
+```
+
+[Robust learning - adversarial learning] Training on cifar-10
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --adv
+```
+
+Training on cifar-100
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --dataset cifar100
+```
+
 </details>
 
 
