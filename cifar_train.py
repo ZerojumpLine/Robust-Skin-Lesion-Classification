@@ -16,6 +16,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import models
 from tensorboardX import SummaryWriter
+from torchtoolbox.transform import Cutout
 from sklearn.metrics import confusion_matrix
 from utils import *
 from imbalance_cifar import IMBALANCECIFAR10, IMBALANCECIFAR100
@@ -51,10 +52,9 @@ parser.add_argument('--loss_type', default="CE", type=str, help='loss type')
 parser.add_argument('--train_rule', default='None', type=str, help='data sampling strategy for train loader')
 # robust learning configures
 parser.add_argument('--mixup', action='store_true', help='mixup of training samples')
-parser.add_argument('--alpha', default=0.2, type=float, help='robust learning - alpha parameters for mixup')
-parser.add_argument('--adv', action='store_true', help='enable adversarial training process')
-parser.add_argument('--eps', default=1., type=float, help='robust learning - l parameters for adversarial training')
-parser.add_argument('--xi', default=0.1, type=float, help='robust learning - epsilon parameters for adversarial training')
+parser.add_argument('--alpha', default=1., type=float, help='robust learning - alpha parameters for mixup')
+parser.add_argument('--randaugment', action='store_true', help='enable randaugment')
+parser.add_argument('--cutout', action='store_true', help='cutout of training samples')
 # general configures
 parser.add_argument('--exp_str', default='0', type=str, help='number to indicate which experiment it is')
 parser.add_argument('--seed', default=None, type=int, help='seed for initializing training. ')
@@ -69,8 +69,10 @@ def main():
     args.store_name = '_'.join([args.dataset, args.arch, args.loss_type, args.train_rule, args.imb_type, str(args.imb_factor), args.exp_str])
     if args.mixup:
         args.store_name = args.store_name + '_mixup'
-    if args.adv:
-        args.store_name = args.store_name + '_adv'
+    if args.randaugment:
+        args.store_name = args.store_name + '_randaugment'
+    if args.cutout:
+        args.store_name = args.store_name + '_cutout'
     prepare_folders(args)
     if args.seed is not None:
         random.seed(args.seed)
@@ -135,12 +137,29 @@ def main_worker(gpu, ngpus_per_node, args):
 
     # Data loading code
 
-    transform_train = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    ])
+    if args.randaugment:
+        transform_train = transforms.Compose([
+            transforms.RandAugment(),
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        ])
+    elif args.cutout:
+        transform_train = transforms.Compose([
+            Cutout(),
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        ])
+    else:
+        transform_train = transforms.Compose([
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        ])
 
     transform_val = transforms.Compose([
         transforms.ToTensor(),
@@ -283,20 +302,6 @@ def train(train_loader, model, criterion, optimizer, epoch, args, log, tf_writer
             loss_mixup = loss + criterion(output_mixup, target_onehot_mixup)
             loss = loss + loss_mixup
 
-        if args.adv:
-            '''
-            add adversarial noise to the input
-            '''
-            # find the direction
-            r_vadv = generate_virtual_adversarial_perturbation(args, model, input, target)
-            r_vadv = r_vadv.detach()
-            ## the third step, train using the argumented results
-            input_adv = input + r_vadv
-            #
-            output_adv = model(input_adv)
-            loss_adv = criterion(output_adv, target_onehot)
-            loss = loss + loss_adv
-
         # compute output
         output = model(input)
         loss_origin = criterion(output, target_onehot)
@@ -425,30 +430,6 @@ def one_hot_embedding(labels, num_classes):
     y = torch.eye(num_classes)  # [D,D]
 
     return y[labels]  # [N,D]
-
-def generate_virtual_adversarial_perturbation(args, model, data, target, criterion = nn.CrossEntropyLoss().cuda()):
-    d = torch.randn(data.size())
-    d = d.cuda(non_blocking=True)
-    d = args.xi * get_normalized_vector(d)
-
-    d.requires_grad = True
-    output = model(data + d)
-    # folowing nnunet...
-    logit_m = output
-    dist = criterion(logit_m, target)
-    grad = torch.autograd.grad(dist, d)[0] # return a tuple?
-    d = grad.detach()
-
-    return args.eps * get_normalized_vector(d)
-
-def get_normalized_vector(d):
-    dmax = torch.zeros(d.shape[0], 1, 1, 1)
-    dmax = dmax.cuda(non_blocking=True)
-    for k in range(0, d.shape[0]):
-        dmax[k, :, :, :] = (1e-12 + torch.max(d[k, :, :, :]))
-    d /= dmax
-    d /= torch.sqrt(1e-6 + torch.sum(d.pow(2), dim=tuple(list(range(1, len(d.shape)))), keepdim=True))
-    return d
 
 if __name__ == '__main__':
     main()

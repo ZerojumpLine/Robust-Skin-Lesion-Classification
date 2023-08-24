@@ -11,6 +11,8 @@ log/cifar*
 checkpoint/HAM*
 checkpoint/cifar*
 data/*
+CIFAR-10-C/*
+cifar10results/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

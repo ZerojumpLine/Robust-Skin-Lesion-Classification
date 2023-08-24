@@ -119,10 +119,16 @@ python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --
 python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --mixup
 ```
 
-[Robust learning - adversarial learning] Training on cifar-10
+[Robust learning - randaugment] Training on cifar-10
 
 ```
-python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --adv
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --randaugment
+```
+
+[Robust learning - cutout] Training on cifar-10
+
+```
+python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --train_rule None --cutout
 ```
 
 Training on cifar-100
