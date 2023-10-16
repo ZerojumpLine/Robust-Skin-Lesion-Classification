@@ -8,6 +8,7 @@ skinlesiondatasets/SkinLesionDatasets
 skinlesiondatasets/SkinLesionDatasets_C
 log/HAM*
 log/cifar*
+checkpoint*
 checkpoint/HAM*
 checkpoint/cifar*
 data/*
