@@ -146,7 +146,10 @@ python cifar_train.py --gpu 0 --imb_type exp --imb_factor 0.01 --loss_type CE --
 Test Neural Networks on imbalanced cifar
 </summary>
 
+Download [cifar-10-c](https://zenodo.org/records/2535967) and [cifar-100-c](https://zenodo.org/records/3555552)
 Please refer to '/cifar10test.ipynb'.
+
+We provide the pretrained classification models using HAM/CIFAR-10/CIFAR-100 with different training strategies [here](https://drive.google.com/file/d/1pY0-FU-GXN41ZeT8ibXMg-vIjsryhP9d/view?usp=drive_link).
 
 </details>
 
