@@ -20,6 +20,7 @@ try to install all the dependencies with
 
 ```
 pip install -r requirements.txt
+pip install jupyter
 ```
 also install the conda environment for the jupyter notebook kernel.
 
@@ -80,11 +81,11 @@ We provided a pretrained model that trained on HAM training splits.
   <tr>
     <td>ResNet</td>
     <td>62M</td>
-    <td>86.0%</td>
-    <td><a href="https://drive.google.com/file/d/1yc0aJ-6TfP3_ysvx_FUrfzFCxqx8JwoF/view?usp=drive_link">ckpt</a></td>
-    <td><a href="https://drive.google.com/file/d/1sCtYfPS_mJeKGfBk7PiMuzfNMNJRXih_/view?usp=sharing">args</a></td>
-    <td><a href="https://drive.google.com/file/d/17j2JhxZm5saORRiT78VYjQKj6nkTG9MN/view?usp=sharing">log_train</a></td>
-    <td><a href="https://drive.google.com/file/d/1dxiqMMQiviT3vPPvEA05T6GNk7V5pI9o/view?usp=sharing">log_eval</a></td>
+    <td>85.0%</td>
+    <td><a href="https://drive.google.com/file/d/1Tch8BgRjDNh73pg8JAUn_ySy_32CZtVF/view?usp=share_link">ckpt</a></td>
+    <td><a href="https://drive.google.com/file/d/1OVCUEtL0eziTpO9n5xJdsjKuLg3hTrCE/view?usp=sharing">args</a></td>
+    <td><a href="https://drive.google.com/file/d/1G8OVG3BTSCA-MzFe1NKwfrgsjPtUVte8/view?usp=sharing">log_train</a></td>
+    <td><a href="https://drive.google.com/file/d/1l-DdQcvmvyKix2ZDzXbpNrirsEkTUimd/view?usp=sharing">log_eval</a></td>
   </tr>
 </table>
 
@@ -149,7 +150,7 @@ Test Neural Networks on imbalanced cifar
 Download [cifar-10-c](https://zenodo.org/records/2535967) and [cifar-100-c](https://zenodo.org/records/3555552)
 Please refer to '/cifar10test.ipynb'.
 
-We provide the pretrained classification models using HAM/CIFAR-10/CIFAR-100 with different training strategies [here](https://drive.google.com/file/d/1pY0-FU-GXN41ZeT8ibXMg-vIjsryhP9d/view?usp=drive_link).
+We provide the pretrained classification models using HAM/CIFAR-10/CIFAR-100 with different training strategies [here](https://drive.google.com/file/d/1g6akq1PR-2d41WzdECA-qRPzZX45sA1_/view?usp=sharing).
 
 </details>
 
